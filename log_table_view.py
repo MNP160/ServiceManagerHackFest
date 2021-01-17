@@ -5,71 +5,78 @@ from tkinter import Text
 from PIL import Image,ImageTk, ImageOps
 
 root = Tk()
-
-# myLabel = Label(root, text="Dashboard")
-
+root.title('Bermuda Service Manager')
 root.geometry('600x500')
+
+notebook = ttk.Notebook(root)
+notebook.pack()
 
 imge=Image.open("purple-red.jpg")
 photo=ImageTk.PhotoImage(imge.resize((600, 500)))
 
-lab=Label(image=photo)
-lab.place(x=0,y=0)
+frame1 = Frame(notebook, width=600, height=500)
+frame2 = Frame(notebook, width=600, height=500)
 
-title = Label(root, text="Log Data",width=25,font=("bold", 24), bg = 'purple', fg = 'white', relief = "groove")
-title.place(relx=0.114,rely=0.2135)
+frame1.pack(fill="both", expand=1)
+frame2.pack(fill="both", expand=1)
 
-my_tree = ttk.Treeview(root)
+notebook.add(frame1, text="Logs")
+notebook.add(frame2, text="Services")
+
+lab1=Label(frame1, image=photo)
+lab1.place(x=0,y=0)
+
+lab2=Label(frame2, image=photo)
+lab2.place(x=0,y=0)
+
+title_logs = Label(frame1, text="Log Data",width=25,font=("bold", 24), bg = 'purple', fg = 'white', relief = "groove")
+title_logs.place(relx=0.114,rely=0.2135)
+
+logs = ttk.Treeview(frame1)
 
 # Columns
-my_tree['columns'] = ("Name", "URL","Status", "Time")
+logs['columns'] = ("Name", "URL","Status", "Time")
 
-my_tree.column("#0", width=10)
-my_tree.column("Name", anchor=W, width=200)
-my_tree.column("URL", anchor=W, width=150)
-my_tree.column("Status", anchor=CENTER, width=40)
-my_tree.column("Time", anchor=CENTER, width=70)
+logs.column("#0", width=10)
+logs.column("Name", anchor=W, width=200)
+logs.column("URL", anchor=W, width=150)
+logs.column("Status", anchor=CENTER, width=40)
+logs.column("Time", anchor=CENTER, width=70)
 
 # headings
-my_tree.heading("#0",text="ID", anchor=W)
-my_tree.heading("Name",text="Name", anchor=CENTER)
-my_tree.heading("URL",text="URL", anchor=CENTER)
-my_tree.heading("Status",text="Status", anchor=CENTER)
-my_tree.heading("Time",text="Time", anchor=CENTER)
+logs.heading("#0",text="ID", anchor=W)
+logs.heading("Name",text="Name", anchor=CENTER)
+logs.heading("URL",text="URL", anchor=CENTER)
+logs.heading("Status",text="Status", anchor=CENTER)
+logs.heading("Time",text="Time", anchor=CENTER)
 
 data = []
 
-my_tree.insert(parent='', index='end',iid=0, text="", values=("Dobri", "localhost", 200,"2021"))
+logs.insert(parent='', index='end',iid=0, text="", values=("Dobromir", "localhost", 200,"2021"))
 
-# my_tree.pack(pady=20)
-my_tree.place(relx=0.12,rely=0.3)
+# # my_tree.pack(pady=20)
+logs.place(relx=0.12,rely=0.3)
 
-login = Button(root, text="Back",relief="raised",width=5,font=("arial", 13), bg = "purple", fg='white',command = root.destroy)
-login.place(x=500,y=400)
+title_serv = Label(frame2, text="Services",width=25,font=("bold", 24), bg = 'purple', fg = 'white', relief = "groove")
+title_serv.place(relx=0.114,rely=0.2135)
 
-# Entry Boxes
-# add_frame = Frame(root)
-# add_frame.pack(pady=20)
+serv = ttk.Treeview(frame2)
 
-# nl = Label(add_frame, text="Name")
-# nl.grid(row=0, column=0)
+# Creating A Table, Columns & Headings
+serv['columns'] = ("Service", "URL")
+# Columns
+serv.column("#0",anchor=W, width=10)
+serv.column("Service",anchor=W, width=250)
+serv.column("URL", anchor=W, width=210)
 
-# il = Label(add_frame,text="URL")
-# il.grid(row=0, column=1)
+# Headings
+serv.heading("#0",text="ID")
+serv.heading("Service",text="Service")
+serv.heading("URL",text="URL")
 
-# name_box = Entry(add_frame)
-# name_box.grid(row=1, column=0)
+serv.place(relx=0.12,rely=0.3) # End Of Table
 
-# url_box = Entry(add_frame)
-# url_box.grid(row=1, column=1)
-
-# Add Record
-# def add_record():
-#     my_tree.insert(parent='', index='end',iid=0, text="", values=(name_box.get(), url_box.get(), 200,"2021"))
-
-# Buttons
-# add_records = Button(root, text="Add Service")
-# add_records.pack(pady=20)
-
+quit = Button(root, text="Quit",relief="raised",width=5,font=("arial", 13), bg = "purple", fg='white',command = root.destroy)
+quit.place(x=500,y=400)
 
 root.mainloop()
