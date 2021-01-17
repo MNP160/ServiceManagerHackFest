@@ -38,13 +38,14 @@ entry_2.place(x=240,y=281)
 
 vld_label = Label(root, text = "Invalid email address or password",width=27,font=("ariel", 10), bg = '#ede7a0', fg = 'black', relief = "solid", borderwidth = 1)
 
+# Validate User
 def validate():
     
     email_v = email.get()
     pass_v = password.get()
     
     if email_v == 'test' and pass_v == 'test':
-        root.destroy()
+         root.destroy() # To Change
     else:
         vld_label.place(x=242,y=315)
 
