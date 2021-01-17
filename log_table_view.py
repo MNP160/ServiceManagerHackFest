@@ -1,6 +1,7 @@
 from tkinter import * 
 from tkinter import ttk
 from tkinter import Text
+from db import *
 
 from PIL import Image,ImageTk, ImageOps
 
@@ -30,32 +31,37 @@ lab2=Label(frame2, image=photo)
 lab2.place(x=0,y=0)
 
 title_logs = Label(frame1, text="Log Data",width=25,font=("bold", 24), bg = 'purple', fg = 'white', relief = "groove")
-title_logs.place(relx=0.114,rely=0.2135)
+title_logs.place(relx=0.114,rely=0.1)
 
 logs = ttk.Treeview(frame1)
-
+#logs.place(relx=)
 # Columns
 logs['columns'] = ("Name", "URL","Status", "Time")
 
-logs.column("#0", width=10)
-logs.column("Name", anchor=W, width=200)
-logs.column("URL", anchor=W, width=150)
-logs.column("Status", anchor=CENTER, width=40)
-logs.column("Time", anchor=CENTER, width=70)
+#logs.column("#0", width=10)
+logs.column("Name", anchor=W, width=70)
+logs.column("URL", anchor=W, width=140)
+logs.column("Status", anchor=CENTER, width=70)
+logs.column("Time", anchor=CENTER, width=150)
 
 # headings
-logs.heading("#0",text="ID", anchor=W)
+#logs.heading("#0",text="ID", anchor=W)
 logs.heading("Name",text="Name", anchor=CENTER)
 logs.heading("URL",text="URL", anchor=CENTER)
 logs.heading("Status",text="Status", anchor=CENTER)
 logs.heading("Time",text="Time", anchor=CENTER)
 
 data = []
+dblogs=get_all_logs()
+counter=0
+for log in dblogs:
+    logs.insert(parent='', index='end',iid=counter, text="", values=(counter,log.get('name'), log.get('url'),log.get('status'), log.get('time')))
+    counter+=1
 
-logs.insert(parent='', index='end',iid=0, text="", values=("Dobromir", "localhost", 200,"2021"))
+
 
 # # my_tree.pack(pady=20)
-logs.place(relx=0.12,rely=0.3)
+logs.place(relx=0.5,rely=0.5, anchor='c', width=500, height=250)
 
 title_serv = Label(frame2, text="Services",width=25,font=("bold", 24), bg = 'purple', fg = 'white', relief = "groove")
 title_serv.place(relx=0.114,rely=0.2135)

@@ -1,4 +1,6 @@
 import pymongo
+from datetime import datetime
+
 
 _db=None
 
@@ -60,6 +62,17 @@ def edit_service_by_url(name, url):
         return False
                         
    
+def create_log(name, url, status, time):
+    #log={'name':name, 'url':url, 'status':status,'time':time}
+    logs_collection=get_collection('logs')
+    result=logs_collection.insert_one({'name':name, 'url':url, 'status':status,'time':time})
+    if result:
+        return True
+    else:
+        return False     
+
+
+   
 
 def get_all_logs():
     logs_collection=get_collection('logs')
@@ -78,6 +91,11 @@ def check_user_exists(email, password):
     else:
         return False    
 
+
+#currentTime=datetime.now()
+
+#result=create_log('testapi2', 'localhost:8083', '200', currentTime.strftime("%d/%m/%Y %H:%M:%S"))
+#print(result)
 
 #result=edit_service_by_name('testapi2', 'localhost:8083')
 #print(result)
