@@ -1,5 +1,6 @@
 from tkinter import *
 from tkinter import Text
+from db import check_user_exists
 
 from PIL import Image,ImageTk, ImageOps
 
@@ -33,7 +34,7 @@ entry_1.place(x=240,y=241)
 label_2 = Label(root, text="Password ",width=10,font=("bold", 15), bg = 'purple', fg = 'white', relief = "groove")
 label_2.place(x=120,y=280)
 
-entry_2 = Entry(root,textvar=password, font=("arial", 14))
+entry_2 = Entry(root,textvar=password, show='*', font=("arial", 14))
 entry_2.place(x=240,y=281)
 
 vld_label = Label(root, text = "Invalid email address or password",width=27,font=("ariel", 10), bg = '#ede7a0', fg = 'black', relief = "solid", borderwidth = 1)
@@ -42,8 +43,8 @@ def validate():
     
     email_v = email.get()
     pass_v = password.get()
-    
-    if email_v == 'test' and pass_v == 'test':
+    result = check_user_exists(email_v, pass_v)
+    if result:
         root.destroy()
     else:
         vld_label.place(x=242,y=315)
