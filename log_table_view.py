@@ -2,7 +2,8 @@ from tkinter import *
 from tkinter import ttk
 from tkinter import Text
 from db import *
-
+import sched, time
+from manager import query_services
 from PIL import Image,ImageTk, ImageOps
 
 root = Tk()
@@ -36,16 +37,17 @@ title_logs.place(relx=0.114,rely=0.1)
 logs = ttk.Treeview(frame1)
 #logs.place(relx=)
 # Columns
-logs['columns'] = ("Name", "URL","Status", "Time")
-
-#logs.column("#0", width=10)
+logs['columns'] = ("Id","Name", "URL","Status", "Time")
+logs.column("#0", width=0)
+logs.column("Id", width=10)
 logs.column("Name", anchor=W, width=70)
 logs.column("URL", anchor=W, width=140)
 logs.column("Status", anchor=CENTER, width=70)
 logs.column("Time", anchor=CENTER, width=150)
 
 # headings
-#logs.heading("#0",text="ID", anchor=W)
+logs.heading("#0", text='')  
+logs.heading("Id",text="ID", anchor=W)
 logs.heading("Name",text="Name", anchor=CENTER)
 logs.heading("URL",text="URL", anchor=CENTER)
 logs.heading("Status",text="Status", anchor=CENTER)
@@ -64,25 +66,39 @@ for log in dblogs:
 logs.place(relx=0.5,rely=0.5, anchor='c', width=500, height=250)
 
 title_serv = Label(frame2, text="Services",width=25,font=("bold", 24), bg = 'purple', fg = 'white', relief = "groove")
-title_serv.place(relx=0.114,rely=0.2135)
+title_serv.place(relx=0.114,rely=0.1)
 
 serv = ttk.Treeview(frame2)
 
 # Creating A Table, Columns & Headings
-serv['columns'] = ("Service", "URL")
+serv['columns'] = ("Id","Name", "URL")
 # Columns
-serv.column("#0",anchor=W, width=10)
-serv.column("Service",anchor=W, width=250)
-serv.column("URL", anchor=W, width=210)
+serv.column("#0", width=0)
+serv.column("Id",anchor=W, width=10)
+serv.column("Name",anchor=W, width=100)
+serv.column("URL", anchor=W, width=200)
+
+
+
 
 # Headings
-serv.heading("#0",text="ID")
-serv.heading("Service",text="Service")
+serv.heading("#0", text='')  
+serv.heading("Id",text="ID")
+serv.heading("Name",text="Name")
 serv.heading("URL",text="URL")
+dbservices=get_all_services()
+count=0
+for service in dbservices:
+    serv.insert(parent='', index='end',iid=count, text="", values=(count,log.get('name'), log.get('url')))
+    count+=1
 
-serv.place(relx=0.12,rely=0.3) # End Of Table
+serv.place(relx=0.5,rely=0.5, anchor='c') # End Of Table
 
 quit = Button(root, text="Quit",relief="raised",width=5,font=("arial", 13), bg = "purple", fg='white',command = root.destroy)
 quit.place(x=500,y=400)
 
 root.mainloop()
+starttime = time.time()
+while True:
+    query_services()
+    time.sleep(600.0- ((time.time() - starttime) % 600.0))
